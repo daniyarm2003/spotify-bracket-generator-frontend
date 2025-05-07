@@ -1,0 +1,20 @@
+.main-navbar {
+    background-color: var(--secondary-color);
+    color: var(--secondary-text-color);
+    padding: 10px;
+}
+
+.main-navbar-link {
+    color: var(--secondary-text-color);
+    font-size: 1.2rem;
+}
+
+.main-navbar-link:hover {
+    color: var(--secondary-text-color-hover);
+}
+
+.main-navbar-right-aligned {
+    flex-direction: row;
+    justify-content: end !important;
+    width: 100%;
+}

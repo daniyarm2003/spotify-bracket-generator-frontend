@@ -1,0 +1,11 @@
+.title-container {
+    background-color: var(--primary-color);
+    padding: 10px;
+}
+
+.title-container h1 {
+    font-size: 2.5rem;
+    color: var(--primary-text-color);
+    font-family: sans-serif;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
