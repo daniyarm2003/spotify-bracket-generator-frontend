@@ -15,6 +15,25 @@
 
 .main-navbar-right-aligned {
     flex-direction: row;
-    justify-content: end !important;
-    width: 100%;
+    justify-content: end;
+    width: fit-content;
+}
+
+.main-navbar-profile-display {
+    width: fit-content;
+    flex-direction: column;
+    transition: 0.2s;
+}
+
+.main-navbar-profile-text {
+    text-align: center;
+    color: var(--secondary-text-color);
+}
+
+.profile-name {
+    font-weight: bold;
+}
+
+.profile-email {
+    font-size: 0.8rem;
 }

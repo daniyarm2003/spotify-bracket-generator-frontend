@@ -19,7 +19,8 @@ export default class SpotifyAuthApi {
 
     public async logout(abortController?: AbortController) {
         const response = await this.serverApi.post('/auth/logout', {}, {
-            signal: abortController?.signal
+            signal: abortController?.signal,
+            withCredentials: true
         });
 
         return response.data;

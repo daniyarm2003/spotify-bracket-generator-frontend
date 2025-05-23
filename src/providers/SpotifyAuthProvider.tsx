@@ -42,13 +42,17 @@ const SpotifyAuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             if(err?.message === 'AbortError' || err?.code === 'ERR_CANCELED') {
                 console.warn('Request aborted');
             }
-            else {
-                console.error('Error fetching user:', err);
+            else if(err?.status === 401) {
+                setIsAuthenticated(false);
                 setIsLoading(false);
             }
-            
-            setError(err);
-            setIsAuthenticated(false);
+            else {
+                console.error('Error fetching user:', err);
+                
+                setIsLoading(false);
+                setError(err);
+                setIsAuthenticated(false);
+            }
         }
     }
 

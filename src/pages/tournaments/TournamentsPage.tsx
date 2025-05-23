@@ -1,23 +1,17 @@
 import React from 'react';
-import './MainPage.css';
 import TitleContainer from '../../components/title-container/TitleContainer';
 import MainNavbar from '../../components/main-navbar/MainNavbar';
 
-const MainPage: React.FC = () => {
+const TournamentsPage: React.FC = () => {
     return (
         <div className='page-component'>
             <TitleContainer />
             <MainNavbar />
-
             <div className='default-page-content-container'>
-                <h2>Welcome to Spotify Bracket Builder!</h2>
-                <p>
-                    Start creating your music brackets by selecting options from the navbar above.
-                </p>
-                <button className='get-started-button'>Get Started</button>
+                <h2 className='page-heading'>My Tournaments</h2>
             </div>
         </div>
     );
-};
+}
 
-export default MainPage;
+export default TournamentsPage;
