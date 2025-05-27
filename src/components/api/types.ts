@@ -15,3 +15,11 @@ export interface SpotifyAlbum {
     imageUrl?: string;
     savingUsers: User[];
 }
+
+export interface TournamentSimpleDTO {
+    id: string;
+    name: string;
+    published: boolean;
+    createdAt: Date;
+    userId: string;
+}
