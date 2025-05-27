@@ -4,6 +4,9 @@ import MainNavbar from '../../components/main-navbar/MainNavbar';
 import { useServerApi } from '../../providers/ServerApiProvider';
 import TournamentApi from '../../components/api/TournamentApi';
 import { TournamentSimpleDTO } from '../../components/api/types';
+import TournamentList from './TournamentList';
+
+import './TournamentsPage.css';
 
 const TournamentsPage: React.FC = () => {
     const serverApi = useServerApi();
@@ -47,15 +50,7 @@ const TournamentsPage: React.FC = () => {
             <MainNavbar />
             <div className='default-page-content-container'>
                 <h2 className='page-heading'>My Tournaments</h2>
-                {
-                    isLoading ? (<p>Loading...</p>)
-                    : tournaments.map((tournament) => (
-                        <div key={tournament.id}>
-                            <p>{tournament.name}</p>
-                            <p>{tournament.createdAt.toISOString()}</p>
-                        </div>
-                    ))
-                }
+                <TournamentList isLoading={isLoading} tournaments={tournaments} />
             </div>
         </div>
     );

@@ -15,4 +15,5 @@
   color: var(--secondary-text-color);
   text-shadow: 1px 1px 1px;
   font-family: sans-serif;
+  font-weight: bold;
 }
