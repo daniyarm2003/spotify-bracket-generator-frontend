@@ -2,6 +2,7 @@ import React, { useContext, createContext, useState, useEffect } from 'react';
 import { User } from '../components/api/types';
 import { useServerApi } from './ServerApiProvider';
 import SpotifyAuthApi from '../components/api/SpotifyAuthApi';
+import { isAbortError } from '../utils/misc';
 
 export interface SpotifyAuthContextType {
     isAuthenticated: boolean;
@@ -39,7 +40,7 @@ const SpotifyAuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
             setIsLoading(false);
 
         } catch (err: any) {
-            if(err?.message === 'AbortError' || err?.code === 'ERR_CANCELED') {
+            if(isAbortError(err)) {
                 console.warn('Request aborted');
             }
             else if(err?.status === 401) {

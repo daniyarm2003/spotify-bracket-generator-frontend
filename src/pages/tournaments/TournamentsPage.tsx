@@ -7,6 +7,7 @@ import { TournamentSimpleDTO } from '../../components/api/types';
 import TournamentList from './TournamentList';
 
 import './TournamentsPage.css';
+import { isAbortError } from '../../utils/misc';
 
 const TournamentsPage: React.FC = () => {
     const serverApi = useServerApi();
@@ -25,7 +26,7 @@ const TournamentsPage: React.FC = () => {
             setIsLoading(false);
         }
         catch (err: any) {
-            if(err?.message === 'AbortError' || err?.code === 'ERR_CANCELED') {
+            if(isAbortError(err)) {
                 console.warn('Request aborted');
             }
             else {

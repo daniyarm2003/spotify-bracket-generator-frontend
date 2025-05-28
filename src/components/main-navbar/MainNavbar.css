@@ -9,18 +9,23 @@
     font-size: 1.2rem;
 }
 
+.main-navbar-link-logout {
+    text-align: left;
+}
+
 .main-navbar-link:hover {
     color: var(--secondary-text-color-hover);
 }
 
 .main-navbar-right-aligned {
+    display: flex;
     flex-direction: row;
     justify-content: end;
-    width: fit-content;
 }
 
 .main-navbar-profile-display {
     width: fit-content;
+    display: flex;
     flex-direction: column;
     transition: 0.2s;
 }
@@ -36,4 +41,14 @@
 
 .profile-email {
     font-size: 0.8rem;
+}
+
+.main-navbar-offcanvas {
+    background-color: var(--secondary-color);
+    color: var(--secondary-text-color);
+}
+
+.main-navbar-offcanvas-title {
+    color: var(--secondary-text-color);
+    font-weight: bold;
 }

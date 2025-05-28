@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav, Container, Spinner } from 'react-bootstrap';
+import { Navbar, Nav, Container, Spinner, Offcanvas, Row, Col } from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router';
 
 import './MainNavbar.css';
@@ -56,22 +56,34 @@ const MainNavbar: React.FC = () => {
     }
 
     return (
-        <Navbar className='main-navbar' sticky='top'>
+        <Navbar className='main-navbar' sticky='top' expand='md'>
             <Container fluid>
-                <Nav>
-                    <Nav.Link as={Link} className='main-navbar-link' to='/'>Home</Nav.Link>
-                    {
-                        showUserLinks && (
-                            <>
-                                <Nav.Link as={Link} className='main-navbar-link' to='/tournaments'>Tournaments</Nav.Link>
-                                <Nav.Link as={'button'} className='main-navbar-link' onClick={() => handleLogout()}>Log Out</Nav.Link>
-                            </>
-                        )
-                    }
-                </Nav>
-            </Container>
-            <Container fluid className='main-navbar-right-aligned'>
-                <RenderAuthSection />
+                <Row style={{ width: '100%' }}>
+                    <Col>
+                        <Navbar.Toggle />
+                        <Navbar.Offcanvas placement='end' className='main-navbar-offcanvas'>
+                            <Offcanvas.Header closeButton>
+                                <Offcanvas.Title className='main-navbar-offcanvas-title'>Navigation</Offcanvas.Title>
+                            </Offcanvas.Header>
+                            <Offcanvas.Body>
+                                <Nav>
+                                    <Nav.Link as={Link} className='main-navbar-link' to='/'>Home</Nav.Link>
+                                    {
+                                        showUserLinks && (
+                                            <>
+                                                <Nav.Link as={Link} className='main-navbar-link' to='/tournaments'>Tournaments</Nav.Link>
+                                                <Nav.Link as={'button'} className='main-navbar-link main-navbar-link-logout' onClick={() => handleLogout()}>Log Out</Nav.Link>
+                                            </>
+                                        )
+                                    }
+                                </Nav>
+                            </Offcanvas.Body>
+                        </Navbar.Offcanvas>
+                    </Col>
+                    <Col xs={'auto'} className='main-navbar-right-aligned'>
+                        <RenderAuthSection />
+                    </Col>
+                </Row>
             </Container>
         </Navbar>
     );
