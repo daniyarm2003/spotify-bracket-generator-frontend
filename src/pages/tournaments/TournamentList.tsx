@@ -5,9 +5,11 @@ import TournamentCard from './TournamentCard';
 interface TournamentListProps {
     isLoading: boolean;
     tournaments: TournamentSimpleDTO[];
+    onCreateNew: () => void;
+    onEditTournament: (tournament: TournamentSimpleDTO) => void;
 }
 
-const TournamentList: React.FC<TournamentListProps> = ({ tournaments, isLoading }) => {
+const TournamentList: React.FC<TournamentListProps> = ({ tournaments, isLoading, onCreateNew, onEditTournament }) => {
     if(isLoading) {
         return <Spinner animation='border' />;
     }
@@ -15,9 +17,9 @@ const TournamentList: React.FC<TournamentListProps> = ({ tournaments, isLoading 
     return (
         <Container fluid className='tournament-list'>
             {tournaments.map((tournament) => (
-                <TournamentCard key={tournament.id} tournament={tournament} />
+                <TournamentCard key={tournament.id} tournament={tournament} onEditTournament={onEditTournament} />
             ))}
-            <Card className='tournament-card'>
+            <Card className='tournament-card' onClick={onCreateNew}>
                 <Card.Body>
                     <Card.Title className='tournament-card-title-text'>Create New</Card.Title>
                     <Card.Subtitle className='tournament-card-subtitle-text'>Click here to create a new tournament</Card.Subtitle>

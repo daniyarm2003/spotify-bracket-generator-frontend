@@ -24,10 +24,8 @@
 }
 
 .main-navbar-profile-display {
-    width: fit-content;
     display: flex;
     flex-direction: column;
-    transition: 0.2s;
 }
 
 .main-navbar-profile-text {

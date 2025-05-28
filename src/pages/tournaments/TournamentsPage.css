@@ -35,3 +35,26 @@
 .tournament-card-subtitle-text {
     color: var(--secondary-text-color);
 }
+
+.tournament-card-button-stack {
+    justify-content: center;
+    gap: 3px;
+    margin-top: 10px;
+}
+
+.tournament-card-edit-button {
+    background-color: var(--secondary-color);
+    border: none;
+}
+
+.tournament-card-edit-button:hover {
+    background-color: var(--secondary-color-hover);
+}
+
+.tournament-edit-modal {
+    background-color: var(--secondary-color-light);
+}
+
+.tournament-edit-modal-header {
+    border-bottom: 1px solid var(--primary-color);
+}

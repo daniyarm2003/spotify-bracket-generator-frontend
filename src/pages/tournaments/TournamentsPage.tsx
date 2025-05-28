@@ -8,6 +8,7 @@ import TournamentList from './TournamentList';
 
 import './TournamentsPage.css';
 import { isAbortError } from '../../utils/misc';
+import TournamentEditModal from './TournamentEditModal';
 
 const TournamentsPage: React.FC = () => {
     const serverApi = useServerApi();
@@ -15,6 +16,9 @@ const TournamentsPage: React.FC = () => {
 
     const [ isLoading, setIsLoading ] = useState(true);
     const [ tournaments, setTournaments ] = useState<TournamentSimpleDTO[]>([]);
+
+    const [ showCreateModal, setShowCreateModal ] = useState(false);
+    const [ editingTournament, setEditingTournament ] = useState<TournamentSimpleDTO>();
 
     const fetchTournaments = async (abortController: AbortController) => {
         setIsLoading(true);
@@ -45,14 +49,33 @@ const TournamentsPage: React.FC = () => {
         }
     }, []);
 
+    const handleCreateNewClick = () => {
+        setEditingTournament(undefined);
+        setShowCreateModal(true);
+    };
+
+    const handleEditTournament = (tournament: TournamentSimpleDTO) => {
+        setEditingTournament(tournament);
+        setShowCreateModal(true);
+    };
+
+    const handleEditModalClose = () => {
+        setShowCreateModal(false);
+    };
+
     return (
         <div className='page-component'>
             <TitleContainer />
             <MainNavbar />
             <div className='default-page-content-container'>
                 <h2 className='page-heading'>My Tournaments</h2>
-                <TournamentList isLoading={isLoading} tournaments={tournaments} />
+                <TournamentList isLoading={isLoading} tournaments={tournaments} onCreateNew={handleCreateNewClick} onEditTournament={handleEditTournament} />
             </div>
+            <TournamentEditModal
+                tournament={editingTournament}
+                show={showCreateModal}
+                onClose={handleEditModalClose}
+            />
         </div>
     );
 }
