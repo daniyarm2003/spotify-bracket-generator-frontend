@@ -2,17 +2,22 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import { TournamentSimpleDTO } from '../../components/api/types';
 import { useState, useEffect } from 'react';
 
+export interface TournamentCreateNewProps {
+    name: string;
+    albumCount: number;
+}
+
 interface TournamentEditModalProps {
     tournament?: TournamentSimpleDTO;
+    maxTournamentRounds: number;
     show: boolean;
     onClose: () => void;
+    onCreateNew: (props: TournamentCreateNewProps) => Promise<void>;
 };
 
-const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, show, onClose }) => {
+const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, show, onClose, maxTournamentRounds, onCreateNew }) => {
     const [ tournamentName, setTournamentName ] = useState('');
-    const [ numRounds, setNumRounds ] = useState(1);
-
-    const maxRounds = 16;
+    const [ numRounds, setNumRounds ] = useState(16);
 
     useEffect(() => {
         if(tournament) {
@@ -20,7 +25,7 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
         } 
         else {
             setTournamentName('');
-            setNumRounds(1);
+            setNumRounds(16);
         }
     }, [show]);
 
@@ -32,15 +37,24 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
         const value = parseInt(e.target.value);
 
         if(isNaN(value) || !isFinite(value)) {
-            setNumRounds(1);
+            setNumRounds(16);
         }
-        else if(value < 1 || value > maxRounds) {
-            setNumRounds(Math.min(Math.max(value, 1), maxRounds));
+        else if(value < 1 || value > maxTournamentRounds) {
+            setNumRounds(Math.min(Math.max(value, 1), maxTournamentRounds));
         }
         else {
             setNumRounds(value);
         }
     };
+
+    const handleSubmit = () => {
+        if(!tournament) {
+            onCreateNew({
+                name: tournamentName,
+                albumCount: numRounds
+            });
+        }
+    }
 
     return (
         <Modal show={show} onHide={onClose} centered contentClassName='tournament-edit-modal'>
@@ -51,7 +65,7 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
                 <Form>
                     <Form.Group className='mb-3'>
                         <Form.Label>Tournament Name</Form.Label>
-                        <Form.Control type='text' value={tournamentName} onChange={handleNameChange} />
+                        <Form.Control type='text' maxLength={32} value={tournamentName} onChange={handleNameChange} />
                     </Form.Group>
                     {
                         !tournament && (
@@ -63,13 +77,13 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
                                         value={numRounds} 
                                         onChange={handleNumRoundsChange}
                                         min={1}
-                                        max={maxRounds}
+                                        max={maxTournamentRounds}
                                     />
                                 </Form.Group>
                             </>
                         )
                     }
-                    <Button variant='secondary' className='tournament-card-edit-button w-100' onClick={onClose}>Submit</Button>
+                    <Button variant='secondary' className='tournament-card-edit-button w-100' onClick={() => handleSubmit()}>Submit</Button>
                 </Form>
             </Modal.Body>
         </Modal>

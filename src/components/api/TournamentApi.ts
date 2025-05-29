@@ -1,5 +1,6 @@
 import { Axios } from 'axios';
 import { TournamentSimpleDTO } from './types';
+import { TournamentCreateNewProps } from '../../pages/tournaments/TournamentEditModal';
 
 export default class TournamentApi {
     private readonly serverApi: Axios;
@@ -22,5 +23,18 @@ export default class TournamentApi {
         }));
 
         return formattedTournaments;
+    }
+
+    public async createTournament(props: TournamentCreateNewProps) {
+        const response = await this.serverApi.post('/tournaments', props, {
+            withCredentials: true
+        });
+
+        const tournament = response.data as any;
+
+        return {
+            ...tournament,
+            createdAt: new Date(tournament.createdAt)
+        } as TournamentSimpleDTO;
     }
 }

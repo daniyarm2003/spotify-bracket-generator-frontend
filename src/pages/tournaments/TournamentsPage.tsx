@@ -8,11 +8,14 @@ import TournamentList from './TournamentList';
 
 import './TournamentsPage.css';
 import { isAbortError } from '../../utils/misc';
-import TournamentEditModal from './TournamentEditModal';
+import TournamentEditModal, { TournamentCreateNewProps } from './TournamentEditModal';
+import SpotifyAlbumApi from '../../components/api/SpotifyAlbumApi';
 
 const TournamentsPage: React.FC = () => {
     const serverApi = useServerApi();
+
     const tournamentApi = new TournamentApi(serverApi);
+    const spotifyAlbumApi = new SpotifyAlbumApi(serverApi);
 
     const [ isLoading, setIsLoading ] = useState(true);
     const [ tournaments, setTournaments ] = useState<TournamentSimpleDTO[]>([]);
@@ -20,13 +23,18 @@ const TournamentsPage: React.FC = () => {
     const [ showCreateModal, setShowCreateModal ] = useState(false);
     const [ editingTournament, setEditingTournament ] = useState<TournamentSimpleDTO>();
 
+    const [ maxTournamentRounds, setMaxTournamentRounds ] = useState(16);
+
     const fetchTournaments = async (abortController: AbortController) => {
         setIsLoading(true);
 
         try {
             const tournaments = await tournamentApi.getTournaments(abortController);
+            const albumCount = await spotifyAlbumApi.getLoggedInUserSavedAlbumCount(abortController);
 
             setTournaments(tournaments);
+            setMaxTournamentRounds(albumCount);
+
             setIsLoading(false);
         }
         catch (err: any) {
@@ -63,6 +71,18 @@ const TournamentsPage: React.FC = () => {
         setShowCreateModal(false);
     };
 
+    const onCreateNewTournament = async (props: TournamentCreateNewProps) => {
+        setShowCreateModal(false);
+
+        try {
+            const newTournament = await tournamentApi.createTournament(props);
+            setTournaments(prevTournaments => [...prevTournaments, newTournament]);
+        } 
+        catch (err: any) {
+            console.error('Error creating tournament:', err);
+        }
+    };
+
     return (
         <div className='page-component'>
             <TitleContainer />
@@ -75,6 +95,8 @@ const TournamentsPage: React.FC = () => {
                 tournament={editingTournament}
                 show={showCreateModal}
                 onClose={handleEditModalClose}
+                maxTournamentRounds={maxTournamentRounds}
+                onCreateNew={onCreateNewTournament}
             />
         </div>
     );
