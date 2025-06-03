@@ -3,12 +3,12 @@ import TitleContainer from '../../components/title-container/TitleContainer';
 import MainNavbar from '../../components/main-navbar/MainNavbar';
 import { useServerApi } from '../../providers/ServerApiProvider';
 import TournamentApi from '../../components/api/TournamentApi';
-import { TournamentSimpleDTO } from '../../components/api/types';
+import { TournamentCreateNewProps, TournamentEditProps, TournamentSimpleDTO } from '../../components/api/types';
 import TournamentList from './TournamentList';
 
 import './TournamentsPage.css';
 import { isAbortError } from '../../utils/misc';
-import TournamentEditModal, { TournamentCreateNewProps } from './TournamentEditModal';
+import TournamentEditModal from './TournamentEditModal';
 import SpotifyAlbumApi from '../../components/api/SpotifyAlbumApi';
 
 const TournamentsPage: React.FC = () => {
@@ -72,16 +72,32 @@ const TournamentsPage: React.FC = () => {
     };
 
     const onCreateNewTournament = async (props: TournamentCreateNewProps) => {
-        setShowCreateModal(false);
-
         try {
             const newTournament = await tournamentApi.createTournament(props);
+
             setTournaments(prevTournaments => [...prevTournaments, newTournament]);
+            setShowCreateModal(false);
         } 
         catch (err: any) {
             console.error('Error creating tournament:', err);
         }
     };
+
+    const onEditTournament = async (id: string, props: TournamentEditProps) => {
+        try {
+            const updatedTournament = await tournamentApi.updateTournament(id, props);
+
+            setTournaments(prevTournaments => 
+                prevTournaments.map(tournament => 
+                    tournament.id === updatedTournament.id ? updatedTournament : tournament
+                )
+            );
+            setShowCreateModal(false);
+        } 
+        catch (err: any) {
+            console.error('Error updating tournament:', err);
+        }
+    }
 
     return (
         <div className='page-component'>
@@ -97,6 +113,7 @@ const TournamentsPage: React.FC = () => {
                 onClose={handleEditModalClose}
                 maxTournamentRounds={maxTournamentRounds}
                 onCreateNew={onCreateNewTournament}
+                onEdit={onEditTournament}
             />
         </div>
     );

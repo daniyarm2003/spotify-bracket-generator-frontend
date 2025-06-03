@@ -23,3 +23,12 @@ export interface TournamentSimpleDTO {
     createdAt: Date;
     userId: string;
 }
+
+export interface TournamentCreateNewProps {
+    name: string;
+    albumCount: number;
+}
+
+export interface TournamentEditProps {
+    name?: string;
+}
