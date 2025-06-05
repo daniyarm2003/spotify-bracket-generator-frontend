@@ -1,0 +1,7 @@
+.tournament-bracket-display {
+    background-color: var(--secondary-color-light);
+    max-width: 90%;
+    border: 1px solid;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+}

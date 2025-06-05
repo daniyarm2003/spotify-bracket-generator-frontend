@@ -7,6 +7,7 @@ import MainPage from './pages/main/MainPage';
 import TournamentsPage from './pages/tournaments/TournamentsPage';
 import AuthRedirect from './components/auth-redirect/AuthRedirect';
 import NotFoundPage from './pages/not-found/NotFoundPage';
+import TournamentBracketPage from './pages/tournament-bracket/TournamentBracketPage';
 
 function App() {
   return (
@@ -15,6 +16,9 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/tournaments" element={<AuthRedirect>
           <TournamentsPage />
+        </AuthRedirect>} />
+        <Route path="/tournaments/:tournamentId" element={<AuthRedirect>
+          <TournamentBracketPage />
         </AuthRedirect>} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

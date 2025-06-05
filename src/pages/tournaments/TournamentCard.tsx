@@ -14,7 +14,7 @@ const TournamentCard: React.FC<TournamentCardProps> = ({ tournament, onEditTourn
                 <Card.Title className='tournament-card-title-text'>{tournament.name}</Card.Title>
                 <Card.Subtitle className='tournament-card-subtitle-text'>Created at {tournament.createdAt.toLocaleDateString()}</Card.Subtitle>
                 <Stack direction='vertical' className='tournament-card-button-stack'>
-                    <Button variant='secondary' className='tournament-card-button'>View</Button>
+                    <Button variant='secondary' className='tournament-card-button' href={`/tournaments/${tournament.id}`}>View</Button>
                     <Button variant='secondary' className='tournament-card-button' onClick={() => onEditTournament(tournament)}>Edit Details</Button>
                 </Stack>
             </Card.Body>

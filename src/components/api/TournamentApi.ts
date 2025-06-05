@@ -1,5 +1,5 @@
 import { Axios } from 'axios';
-import { TournamentCreateNewProps, TournamentEditProps, TournamentSimpleDTO } from './types';
+import { TournamentCreateNewProps, TournamentEditProps, TournamentSimpleDTO, TournamentWithBracketDTO } from './types';
 
 export default class TournamentApi {
     private readonly serverApi: Axios;
@@ -48,5 +48,21 @@ export default class TournamentApi {
             ...tournament,
             createdAt: new Date(tournament.createdAt)
         } as TournamentSimpleDTO;
+    }
+
+    public async getTournamentWithBracket(id: string, abortController?: AbortController) {
+        const response = await this.serverApi.get(`/tournaments/${id}`, {
+            signal: abortController?.signal,
+            withCredentials: true
+        });
+
+        const tournament = response.data as any;
+
+        const formattedTournament: TournamentWithBracketDTO = {
+            ...tournament,
+            createdAt: new Date(tournament.createdAt)
+        };
+
+        return formattedTournament;
     }
 }

@@ -24,6 +24,22 @@ export interface TournamentSimpleDTO {
     userId: string;
 }
 
+export interface TournamentWithBracketDTO {
+    id: string;
+    name: string;
+    published: boolean;
+    createdAt: Date;
+    bracket: TournamentRoundTreeNodeDTO;
+}
+
+export interface TournamentRoundTreeNodeDTO {
+    id: number;
+    nextRoundId?: number;
+    tournamentId: string;
+    album?: SpotifyAlbum;
+    previousRounds: TournamentRoundTreeNodeDTO[];
+}
+
 export interface TournamentCreateNewProps {
     name: string;
     albumCount: number;
