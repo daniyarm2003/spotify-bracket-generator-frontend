@@ -1,7 +1,51 @@
 .tournament-bracket-display {
-    background-color: var(--secondary-color-light);
-    max-width: 90%;
+    overflow: scroll;
+    padding: 0;
+}
+
+.tournament-bracket-round-container {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    width: 100%;
+    min-width: fit-content;
+}
+
+.tournament-bracket-sub-round-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    gap: 5px;
+    width: 100%;
+}
+
+.tournament-bracket-round-card {
+    width: 200px;
+    background-color: var(--secondary-color);
     border: 1px solid;
     border-radius: 5px;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+.tournament-bracket-round-card-button {
+    background-color: var(--primary-color);
+    min-width: fit-content;
+    border: none;
+    width: 90%;
+}
+
+.tournament-bracket-round-card-button:hover {
+    background-color: var(--primary-color-hover);
+}
+
+.tournament-bracket-round-card-button:active {
+    background-color: var(--primary-color-hover) !important;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.tournament-bracket-round-card-button:disabled {
+    background-color: var(--secondary-color-light);
+    cursor: not-allowed;
 }

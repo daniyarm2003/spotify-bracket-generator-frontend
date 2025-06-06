@@ -1,6 +1,7 @@
 import React from 'react';
 import { TournamentWithBracketDTO } from '../../components/api/types';
 import { Container, Spinner } from 'react-bootstrap';
+import TournamentBracketRoundDisplay from './TournamentBracketRoundDisplay';
 
 interface TournamentBracketDisplayProps {
     tournament?: TournamentWithBracketDTO;
@@ -12,8 +13,10 @@ const TournamentBracketDisplay: React.FC<TournamentBracketDisplayProps> = ({ tou
     }
 
     return (
-        <Container className='tournament-bracket-display'>
-            <p>{tournament.bracket.id}</p>
+        <Container fluid className='tournament-bracket-display'>
+            <TournamentBracketRoundDisplay
+                round={tournament.bracket}
+            />
         </Container>
     );
 };
