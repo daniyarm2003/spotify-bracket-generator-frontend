@@ -6,7 +6,7 @@ import './MainNavbar.css';
 import { useSpotifyAuth } from '../../providers/SpotifyAuthProvider';
 import MainNavbarProfileDisplay from './MainNavbarProfileDisplay';
 import { useServerApi } from '../../providers/ServerApiProvider';
-import SpotifyAuthApi from '../api/SpotifyAuthApi';
+import SpotifyAuthApi from '../../api/SpotifyAuthApi';
 
 const RenderAuthSection: React.FC = () => {
     const backendUrl = import.meta.env.VITE_REACT_APP_BACKEND_BASE_URL;

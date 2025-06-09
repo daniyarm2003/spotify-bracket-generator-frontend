@@ -3,12 +3,13 @@ import TitleContainer from '../../components/title-container/TitleContainer';
 import MainNavbar from '../../components/main-navbar/MainNavbar';
 import { Navigate, useParams } from 'react-router';
 import { useServerApi } from '../../providers/ServerApiProvider';
-import TournamentApi from '../../components/api/TournamentApi';
-import { TournamentWithBracketDTO } from '../../components/api/types';
+import TournamentApi from '../../api/TournamentApi';
+import { TournamentWithBracketDTO } from '../../api/types';
 import { isAbortError } from '../../utils/misc';
 import TournamentBracketDisplay from './TournamentBracketDisplay';
 
 import './TournamentBracketPage.css';
+import { updateBracketStateAfterWin } from '../../tournament-utils/updateBracketState';
 
 const TournamentBracketPage: React.FC = () => {
     const { tournamentId } = useParams();
@@ -44,6 +45,33 @@ const TournamentBracketPage: React.FC = () => {
         }
     };
 
+    const advanceTournamentWinner = async (nextRoundId: number, winnerId: number) => {
+        if(!tournament) {
+            console.error('Cannot advance tournament winner: no tournament data available');
+            return;
+        }
+
+        try {
+            const updatedNextRound = await tournamentApi.setTournamentRoundWinner(nextRoundId, winnerId);
+
+            setTournament(prevTournament => {
+                if(!prevTournament) {
+                    return undefined;
+                }
+
+                const updatedBracket = updateBracketStateAfterWin(prevTournament.bracket, updatedNextRound);
+
+                return {
+                    ...prevTournament,
+                    bracket: updatedBracket
+                };
+            });
+        }
+        catch(err: any) {
+            console.error('Failed to advance tournament winner:', err);
+        }
+    }
+
     useEffect(() => {
         const abortController = new AbortController();
         fetchTournamentBracket(abortController);
@@ -63,7 +91,7 @@ const TournamentBracketPage: React.FC = () => {
             <MainNavbar />
             <div className='default-page-content-container'>
                 <h2 className='page-heading'>{tournament?.name ?? 'Loading...'}</h2>
-                <TournamentBracketDisplay tournament={tournament} />
+                <TournamentBracketDisplay tournament={tournament} advanceTournamentWinner={advanceTournamentWinner} />
             </div>
         </div>
     );

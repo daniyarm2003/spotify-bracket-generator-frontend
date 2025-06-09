@@ -1,5 +1,5 @@
 import React from 'react';
-import { TournamentSimpleDTO } from '../../components/api/types';
+import { TournamentSimpleDTO } from '../../api/types';
 import { Button, Card, Stack } from 'react-bootstrap';
 
 interface TournamentCardProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { User } from '../api/types';
+import { User } from '../../api/types';
 import { Container } from 'react-bootstrap';
 
 interface MainNavbarProfileDisplayProps {

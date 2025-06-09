@@ -1,13 +1,14 @@
 import React, { useRef } from 'react';
-import { TournamentWithBracketDTO } from '../../components/api/types';
+import { TournamentWithBracketDTO } from '../../api/types';
 import { Container, Spinner } from 'react-bootstrap';
 import TournamentBracketRoundDisplay from './TournamentBracketRoundDisplay';
 
 interface TournamentBracketDisplayProps {
     tournament?: TournamentWithBracketDTO;
+    advanceTournamentWinner: (nextRoundId: number, winnerId: number) => Promise<void>;
 };
 
-const TournamentBracketDisplay: React.FC<TournamentBracketDisplayProps> = ({ tournament }) => {
+const TournamentBracketDisplay: React.FC<TournamentBracketDisplayProps> = ({ tournament, advanceTournamentWinner }) => {
     const bracketDisplayRef = useRef<HTMLDivElement | null>(null);
 
     if(!tournament) {
@@ -19,6 +20,7 @@ const TournamentBracketDisplay: React.FC<TournamentBracketDisplayProps> = ({ tou
             <TournamentBracketRoundDisplay
                 round={tournament.bracket}
                 bracketDisplayRef={bracketDisplayRef}
+                advanceTournamentWinner={advanceTournamentWinner}
             />
         </Container>
     );

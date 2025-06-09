@@ -1,5 +1,5 @@
 import { Axios } from 'axios';
-import { TournamentCreateNewProps, TournamentEditProps, TournamentSimpleDTO, TournamentWithBracketDTO } from './types';
+import { TournamentCreateNewProps, TournamentEditProps, TournamentRoundTreeNodeDTO, TournamentSimpleDTO, TournamentWithBracketDTO } from './types';
 
 export default class TournamentApi {
     private readonly serverApi: Axios;
@@ -64,5 +64,15 @@ export default class TournamentApi {
         };
 
         return formattedTournament;
+    }
+
+    public async setTournamentRoundWinner(nextRoundId: number, winnerId: number) {
+        const response = await this.serverApi.put(`/tournaments/rounds/${nextRoundId}`, {
+            winnerId
+        }, {
+            withCredentials: true
+        });
+
+        return response.data as TournamentRoundTreeNodeDTO;
     }
 }

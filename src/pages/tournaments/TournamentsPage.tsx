@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import TitleContainer from '../../components/title-container/TitleContainer';
 import MainNavbar from '../../components/main-navbar/MainNavbar';
 import { useServerApi } from '../../providers/ServerApiProvider';
-import TournamentApi from '../../components/api/TournamentApi';
-import { TournamentCreateNewProps, TournamentEditProps, TournamentSimpleDTO } from '../../components/api/types';
+import TournamentApi from '../../api/TournamentApi';
+import { TournamentCreateNewProps, TournamentEditProps, TournamentSimpleDTO } from '../../api/types';
 import TournamentList from './TournamentList';
 
 import './TournamentsPage.css';
 import { isAbortError } from '../../utils/misc';
 import TournamentEditModal from './TournamentEditModal';
-import SpotifyAlbumApi from '../../components/api/SpotifyAlbumApi';
+import SpotifyAlbumApi from '../../api/SpotifyAlbumApi';
 
 const TournamentsPage: React.FC = () => {
     const serverApi = useServerApi();

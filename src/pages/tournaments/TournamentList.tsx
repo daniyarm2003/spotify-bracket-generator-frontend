@@ -1,5 +1,5 @@
 import { Card, Container, Spinner } from 'react-bootstrap';
-import { TournamentSimpleDTO } from '../../components/api/types';
+import { TournamentSimpleDTO } from '../../api/types';
 import TournamentCard from './TournamentCard';
 
 interface TournamentListProps {

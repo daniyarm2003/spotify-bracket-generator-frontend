@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { TournamentRoundTreeNodeDTO } from '../../components/api/types';
+import { TournamentRoundTreeNodeDTO } from '../../api/types';
 import { Button, Card } from 'react-bootstrap';
 
 interface TournamentBracketRoundDisplayProps {
@@ -7,12 +7,14 @@ interface TournamentBracketRoundDisplayProps {
     nextRound?: TournamentRoundTreeNodeDTO;
     ref?: React.RefObject<HTMLDivElement | null>;
     bracketDisplayRef: React.RefObject<HTMLDivElement | null>;
+    advanceTournamentWinner: (nextRoundId: number, winnerId: number) => Promise<void>;
 };
 
 interface TournamentBracketRoundCardProps {
     round: TournamentRoundTreeNodeDTO;
     nextRound?: TournamentRoundTreeNodeDTO;
     ref?: React.Ref<HTMLDivElement | null>;
+    advanceTournamentWinner: () => Promise<void>;
 };
 
 interface TournamentBracketRoundLinesProps {
@@ -27,15 +29,21 @@ interface Position {
     y: number;
 };
 
-const TournamentBracketRoundCard: React.FC<TournamentBracketRoundCardProps> = ({ round, nextRound, ref }) => {
+const TournamentBracketRoundCard: React.FC<TournamentBracketRoundCardProps> = ({ round, nextRound, ref, advanceTournamentWinner }) => {
     const isSelectableRound = nextRound && round.album && !Boolean(nextRound.album);
+
+    const handleAdvanceClick = () => {
+        if(isSelectableRound) {
+            advanceTournamentWinner();
+        }
+    }
 
     return (
         <Card ref={ref} className='tournament-bracket-round-card'>
             <Card.Header>{round.album ? `${round.album.artistName} - ${round.album.name}` : 'TBD'}</Card.Header>
             <Card.Img variant='top' src={round.album?.imageUrl ?? 'https://placehold.co/400'} />
             <Card.Body>
-            <Button disabled={!isSelectableRound} variant='secondary' className='tournament-bracket-round-card-button'>
+            <Button disabled={!isSelectableRound} onClick={handleAdvanceClick} variant='secondary' className='tournament-bracket-round-card-button'>
                 Advance
             </Button>
             </Card.Body>
@@ -142,9 +150,9 @@ const TournamentBracketRoundLines: React.FC<TournamentBracketRoundLinesProps> = 
     );
 };
 
-const TournamentBracketRoundDisplay: React.FC<TournamentBracketRoundDisplayProps> = ({ round, nextRound, ref, bracketDisplayRef }) => {
+const TournamentBracketRoundDisplay: React.FC<TournamentBracketRoundDisplayProps> = ({ round, nextRound, ref, bracketDisplayRef, advanceTournamentWinner }) => {
     if(round.previousRounds.length === 0) {
-        return <TournamentBracketRoundCard ref={ref} round={round} nextRound={nextRound} />;
+        return <TournamentBracketRoundCard advanceTournamentWinner={() => advanceTournamentWinner(nextRound!.id, round.id)} ref={ref} round={round} nextRound={nextRound} />;
     }
     else if(round.previousRounds.length !== 2) {
         return <div className='tournament-bracket-round-container'>Invalid round structure</div>;
@@ -165,16 +173,18 @@ const TournamentBracketRoundDisplay: React.FC<TournamentBracketRoundDisplayProps
                     nextRound={round}
                     ref={topRoundRef}
                     bracketDisplayRef={bracketDisplayRef}
+                    advanceTournamentWinner={advanceTournamentWinner}
                 />
                 <TournamentBracketRoundDisplay
                     round={bottomRound}
                     nextRound={round}
                     ref={bottomRoundRef}
                     bracketDisplayRef={bracketDisplayRef}
+                    advanceTournamentWinner={advanceTournamentWinner}
                 />
             </div>
             <div className='tournament-bracket-sub-round-container'>
-                <TournamentBracketRoundCard ref={parentRef} round={round} />
+                <TournamentBracketRoundCard ref={parentRef} round={round} nextRound={nextRound} advanceTournamentWinner={() => advanceTournamentWinner(nextRound!.id, round.id)} />
             </div>
             <TournamentBracketRoundLines
                 topRoundRef={topRoundRef}

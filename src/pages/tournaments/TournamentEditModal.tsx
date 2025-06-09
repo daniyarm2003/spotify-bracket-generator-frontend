@@ -1,5 +1,5 @@
 import { Button, Form, Modal } from 'react-bootstrap';
-import { TournamentCreateNewProps, TournamentEditProps, TournamentSimpleDTO } from '../../components/api/types';
+import { TournamentCreateNewProps, TournamentEditProps, TournamentSimpleDTO } from '../../api/types';
 import React, { useState, useEffect } from 'react';
 
 interface TournamentEditModalProps {

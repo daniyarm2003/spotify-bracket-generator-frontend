@@ -1,7 +1,7 @@
 import React, { useContext, createContext, useState, useEffect } from 'react';
-import { User } from '../components/api/types';
+import { User } from '../api/types';
 import { useServerApi } from './ServerApiProvider';
-import SpotifyAuthApi from '../components/api/SpotifyAuthApi';
+import SpotifyAuthApi from '../api/SpotifyAuthApi';
 import { isAbortError } from '../utils/misc';
 
 export interface SpotifyAuthContextType {
