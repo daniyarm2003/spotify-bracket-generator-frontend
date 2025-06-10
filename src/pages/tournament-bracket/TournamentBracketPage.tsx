@@ -45,14 +45,14 @@ const TournamentBracketPage: React.FC = () => {
         }
     };
 
-    const advanceTournamentWinner = async (nextRoundId: number, winnerId: number) => {
+    const advanceTournamentWinner = async (nextRoundId: number, winnerId?: number) => {
         if(!tournament) {
             console.error('Cannot advance tournament winner: no tournament data available');
             return;
         }
 
         try {
-            const updatedNextRound = await tournamentApi.setTournamentRoundWinner(nextRoundId, winnerId);
+            const updatedNextRound = winnerId ? await tournamentApi.setTournamentRoundWinner(nextRoundId, winnerId) : await tournamentApi.removeTournamentWinner(nextRoundId);
 
             setTournament(prevTournament => {
                 if(!prevTournament) {

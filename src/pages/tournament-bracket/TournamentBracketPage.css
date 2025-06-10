@@ -3,6 +3,10 @@
     padding: 0;
 }
 
+.tournament-bracket-display-outer {
+    padding: 10px;
+}
+
 .tournament-bracket-round-container {
     display: flex;
     flex-direction: row;
@@ -33,10 +37,8 @@
 
 .tournament-bracket-round-card-button {
     background-color: var(--primary-color);
-    min-width: fit-content;
     border: none;
-    width: 90%;
-    font-size: 0.75rem;
+    font-size: 0.5rem;
 }
 
 .tournament-bracket-round-card-button:hover {

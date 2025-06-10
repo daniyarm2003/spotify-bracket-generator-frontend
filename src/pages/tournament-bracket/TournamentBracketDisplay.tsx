@@ -5,7 +5,7 @@ import TournamentBracketRoundDisplay from './TournamentBracketRoundDisplay';
 
 interface TournamentBracketDisplayProps {
     tournament?: TournamentWithBracketDTO;
-    advanceTournamentWinner: (nextRoundId: number, winnerId: number) => Promise<void>;
+    advanceTournamentWinner: (nextRoundId: number, winnerId?: number) => Promise<void>;
 };
 
 const TournamentBracketDisplay: React.FC<TournamentBracketDisplayProps> = ({ tournament, advanceTournamentWinner }) => {
@@ -16,12 +16,14 @@ const TournamentBracketDisplay: React.FC<TournamentBracketDisplayProps> = ({ tou
     }
 
     return (
-        <Container ref={bracketDisplayRef} fluid className='tournament-bracket-display'>
-            <TournamentBracketRoundDisplay
-                round={tournament.bracket}
-                bracketDisplayRef={bracketDisplayRef}
-                advanceTournamentWinner={advanceTournamentWinner}
-            />
+        <Container fluid className='tournament-bracket-display-outer'>
+            <Container ref={bracketDisplayRef} fluid className='tournament-bracket-display'>
+                <TournamentBracketRoundDisplay
+                    round={tournament.bracket}
+                    bracketDisplayRef={bracketDisplayRef}
+                    advanceTournamentWinner={advanceTournamentWinner}
+                />
+            </Container>
         </Container>
     );
 };

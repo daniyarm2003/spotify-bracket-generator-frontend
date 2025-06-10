@@ -75,4 +75,14 @@ export default class TournamentApi {
 
         return response.data as TournamentRoundTreeNodeDTO;
     }
+
+    public async removeTournamentWinner(roundId: number) {
+        const response = await this.serverApi.put(`/tournaments/rounds/${roundId}`, {
+            winnerId: null
+        }, {
+            withCredentials: true
+        });
+
+        return response.data as TournamentRoundTreeNodeDTO;
+    }
 }
