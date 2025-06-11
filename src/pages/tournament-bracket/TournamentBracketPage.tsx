@@ -10,12 +10,15 @@ import TournamentBracketDisplay from './TournamentBracketDisplay';
 
 import './TournamentBracketPage.css';
 import { updateBracketStateAfterWin } from '../../tournament-utils/updateBracketState';
+import useUnauthorizedErrorNavigate from '../../hooks/useUnauthorizedErrorNavigate';
 
 const TournamentBracketPage: React.FC = () => {
     const { tournamentId } = useParams();
 
     const serverApi = useServerApi();
     const tournamentApi = new TournamentApi(serverApi);
+
+    const doUnauthorizedNavigate = useUnauthorizedErrorNavigate();
 
     const [ tournament, setTournament ] = useState<TournamentWithBracketDTO>();
     const [ isTournamentLoading, setTournamentLoading ] = useState(true);
@@ -37,6 +40,8 @@ const TournamentBracketPage: React.FC = () => {
         }
         catch(err: any) {
             if(!isAbortError(err)) {
+                doUnauthorizedNavigate(err);
+
                 setTournamentLoading(false);
                 setTournamentError(err);
 
@@ -68,6 +73,7 @@ const TournamentBracketPage: React.FC = () => {
             });
         }
         catch(err: any) {
+            doUnauthorizedNavigate(err);
             console.error('Failed to advance tournament winner:', err);
         }
     }

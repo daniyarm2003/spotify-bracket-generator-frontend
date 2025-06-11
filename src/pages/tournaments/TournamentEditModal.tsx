@@ -15,13 +15,20 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
     const [ tournamentName, setTournamentName ] = useState('');
     const [ numRounds, setNumRounds ] = useState(16);
 
+    const [ useAI, setUseAI ] = useState(false);
+    const [ aiPrompt, setAiPrompt ] = useState('');
+
     const maxTournamentNameLength = 32;
+    const maxPromptLength = 256;
+
     const trimmedTournamentName = tournamentName.trim();
 
     const isTournamentNameValid = trimmedTournamentName.length > 0 && trimmedTournamentName.length <= maxTournamentNameLength;
     const isNumRoundsValid = numRounds >= 1 && numRounds <= maxTournamentRounds;
 
-    const formValidated = isTournamentNameValid && (tournament !== undefined || isNumRoundsValid);
+    const isAiPromptValid = !useAI || (aiPrompt.trim().length > 0 && aiPrompt.trim().length <= maxPromptLength);
+
+    const formValidated = isTournamentNameValid && (tournament !== undefined || (isNumRoundsValid && isAiPromptValid));
 
     useEffect(() => {
         if(show) {
@@ -37,6 +44,14 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTournamentName(e.target.value);
+    };
+
+    const handleUseAIChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUseAI(e.target.checked);
+    }
+
+    const handleAIPromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setAiPrompt(e.target.value);
     };
 
     const handleNumRoundsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,10 +77,16 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
         }
 
         if(!tournament) {
-            onCreateNew({
+            const creationProps: TournamentCreateNewProps = {
                 name: trimmedTournamentName,
                 albumCount: numRounds
-            });
+            };
+
+            if(useAI) {
+                creationProps.aiPrompt = aiPrompt.trim();
+            }
+
+            onCreateNew(creationProps);
         }
         else {
             onEdit(tournament.id, {
@@ -109,6 +130,28 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
                                     />
                                     <Form.Control.Feedback type='invalid'>
                                         Number of rounds must be a number between 1 and {maxTournamentRounds}.
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group className='mb-3'>
+                                    <Form.Check
+                                        type='checkbox'
+                                        checked={useAI}
+                                        label='Use AI to select albums'
+                                        onChange={handleUseAIChange}
+                                    />
+                                </Form.Group>
+                                <Form.Group className='mb-3'>
+                                    <Form.Label>AI Prompt</Form.Label>
+                                    <Form.Control
+                                        as='textarea'
+                                        disabled={!useAI}
+                                        value={aiPrompt}
+                                        onChange={handleAIPromptChange}
+                                        isInvalid={!isAiPromptValid}
+                                        maxLength={maxPromptLength}
+                                    />
+                                    <Form.Control.Feedback type='invalid'>
+                                        AI prompt must be between 1 and {maxPromptLength} characters.
                                     </Form.Control.Feedback>
                                 </Form.Group>
                             </>

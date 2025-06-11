@@ -10,12 +10,15 @@ import './TournamentsPage.css';
 import { isAbortError } from '../../utils/misc';
 import TournamentEditModal from './TournamentEditModal';
 import SpotifyAlbumApi from '../../api/SpotifyAlbumApi';
+import useUnauthorizedErrorNavigate from '../../hooks/useUnauthorizedErrorNavigate';
 
 const TournamentsPage: React.FC = () => {
     const serverApi = useServerApi();
 
     const tournamentApi = new TournamentApi(serverApi);
     const spotifyAlbumApi = new SpotifyAlbumApi(serverApi);
+
+    const doUnauthorizedNavigate = useUnauthorizedErrorNavigate();
 
     const [ isLoading, setIsLoading ] = useState(true);
     const [ tournaments, setTournaments ] = useState<TournamentSimpleDTO[]>([]);
@@ -42,6 +45,8 @@ const TournamentsPage: React.FC = () => {
                 console.warn('Request aborted');
             }
             else {
+                doUnauthorizedNavigate(err);
+
                 console.error('Error fetching tournaments:', err);
                 setIsLoading(false);
             }
@@ -79,6 +84,7 @@ const TournamentsPage: React.FC = () => {
             setShowCreateModal(false);
         } 
         catch (err: any) {
+            doUnauthorizedNavigate(err);
             console.error('Error creating tournament:', err);
         }
     };
@@ -95,6 +101,7 @@ const TournamentsPage: React.FC = () => {
             setShowCreateModal(false);
         } 
         catch (err: any) {
+            doUnauthorizedNavigate(err);
             console.error('Error updating tournament:', err);
         }
     }

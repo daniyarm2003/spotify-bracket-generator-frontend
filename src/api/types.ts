@@ -43,6 +43,7 @@ export interface TournamentRoundTreeNodeDTO {
 export interface TournamentCreateNewProps {
     name: string;
     albumCount: number;
+    aiPrompt?: string;
 }
 
 export interface TournamentEditProps {
