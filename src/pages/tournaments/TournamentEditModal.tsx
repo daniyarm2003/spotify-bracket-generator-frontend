@@ -1,4 +1,4 @@
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { TournamentCreateNewProps, TournamentEditProps, TournamentSimpleDTO } from '../../api/types';
 import React, { useState, useEffect } from 'react';
 
@@ -12,6 +12,8 @@ interface TournamentEditModalProps {
 };
 
 const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, show, onClose, maxTournamentRounds, onCreateNew, onEdit }) => {
+    const [ requestLoading, setRequestLoading ] = useState(false);
+
     const [ tournamentName, setTournamentName ] = useState('');
     const [ numRounds, setNumRounds ] = useState(16);
 
@@ -23,8 +25,10 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
 
     const trimmedTournamentName = tournamentName.trim();
 
+    const maxRounds = useAI ? Math.min(maxTournamentRounds, 32) : maxTournamentRounds;
+
     const isTournamentNameValid = trimmedTournamentName.length > 0 && trimmedTournamentName.length <= maxTournamentNameLength;
-    const isNumRoundsValid = numRounds >= 1 && numRounds <= maxTournamentRounds;
+    const isNumRoundsValid = numRounds >= 1 && numRounds <= maxRounds;
 
     const isAiPromptValid = !useAI || (aiPrompt.trim().length > 0 && aiPrompt.trim().length <= maxPromptLength);
 
@@ -38,7 +42,12 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
             else {
                 setTournamentName('');
                 setNumRounds(16);
+
+                setUseAI(false);
+                setAiPrompt('');
             }
+
+            setRequestLoading(false);
         }
     }, [show]);
 
@@ -60,8 +69,8 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
         if(isNaN(value) || !isFinite(value) || value < 1) {
             setNumRounds(0);
         }
-        else if(value > maxTournamentRounds) {
-            setNumRounds(Math.min(Math.max(value, 1), maxTournamentRounds));
+        else if(value > maxRounds) {
+            setNumRounds(Math.min(Math.max(value, 1), maxRounds));
         }
         else {
             setNumRounds(value);
@@ -76,6 +85,8 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
             return;
         }
 
+        setRequestLoading(true);
+
         if(!tournament) {
             const creationProps: TournamentCreateNewProps = {
                 name: trimmedTournamentName,
@@ -86,12 +97,12 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
                 creationProps.aiPrompt = aiPrompt.trim();
             }
 
-            onCreateNew(creationProps);
+            onCreateNew(creationProps).then(() => setRequestLoading(false));
         }
         else {
             onEdit(tournament.id, {
                 name: trimmedTournamentName
-            });
+            }).then(() => setRequestLoading(false));
         }
     }
 
@@ -125,11 +136,11 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
                                         value={numRounds || ''}
                                         onChange={handleNumRoundsChange}
                                         min={1}
-                                        max={maxTournamentRounds}
+                                        max={maxRounds}
                                         isInvalid={!isNumRoundsValid}
                                     />
                                     <Form.Control.Feedback type='invalid'>
-                                        Number of rounds must be a number between 1 and {maxTournamentRounds}.
+                                        Number of rounds must be a number between 1 and {maxRounds}.
                                     </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group className='mb-3'>
@@ -157,7 +168,11 @@ const TournamentEditModal: React.FC<TournamentEditModalProps> = ({ tournament, s
                             </>
                         )
                     }
-                    <Button variant='secondary' className='tournament-card-edit-button w-100' type='submit'>Submit</Button>
+                    <Button disabled={requestLoading} variant='secondary' className='tournament-card-edit-button w-100' type='submit'>
+                        {
+                            requestLoading ? (<Spinner animation='border' />) : 'Submit'
+                        }
+                    </Button>
                 </Form>
             </Modal.Body>
         </Modal>
