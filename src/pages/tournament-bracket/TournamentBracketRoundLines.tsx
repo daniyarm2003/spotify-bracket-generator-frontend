@@ -164,9 +164,9 @@ const TournamentBracketRoundLines: React.FC<TournamentBracketRoundLinesProps> = 
             />
             <line
                 x1={orientation === 'RIGHT' ? midpointX - xLimit1 : midpointX - parentPos.x}
-                y1={svgHeight / 2}
+                y1={parentPos.y - topRoundPos.y}
                 x2={orientation === 'RIGHT' ? svgWidth : 0}
-                y2={svgHeight / 2}
+                y2={parentPos.y - topRoundPos.y}
                 stroke='black'
                 strokeWidth='2'
             />
