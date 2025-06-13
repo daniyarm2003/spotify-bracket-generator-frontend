@@ -7,9 +7,10 @@ interface TournamentListProps {
     tournaments: TournamentSimpleDTO[];
     onCreateNew: () => void;
     onEditTournament: (tournament: TournamentSimpleDTO) => void;
+    onDeleteTournament: (tournament: TournamentSimpleDTO) => void;
 }
 
-const TournamentList: React.FC<TournamentListProps> = ({ tournaments, isLoading, onCreateNew, onEditTournament }) => {
+const TournamentList: React.FC<TournamentListProps> = ({ tournaments, isLoading, onCreateNew, onEditTournament, onDeleteTournament }) => {
     if(isLoading) {
         return <Spinner animation='border' />;
     }
@@ -17,7 +18,7 @@ const TournamentList: React.FC<TournamentListProps> = ({ tournaments, isLoading,
     return (
         <Container fluid className='tournament-list'>
             {tournaments.map((tournament) => (
-                <TournamentCard key={tournament.id} tournament={tournament} onEditTournament={onEditTournament} />
+                <TournamentCard key={tournament.id} tournament={tournament} onEditTournament={onEditTournament} onDeleteTournament={onDeleteTournament} />
             ))}
             <Card className='tournament-card' onClick={onCreateNew}>
                 <Card.Body>

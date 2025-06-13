@@ -5,9 +5,10 @@ import { Button, Card, Stack } from 'react-bootstrap';
 interface TournamentCardProps {
     tournament: TournamentSimpleDTO;
     onEditTournament: (tournament: TournamentSimpleDTO) => void;
+    onDeleteTournament: (tournament: TournamentSimpleDTO) => void;
 }
 
-const TournamentCard: React.FC<TournamentCardProps> = ({ tournament, onEditTournament }: TournamentCardProps) => {
+const TournamentCard: React.FC<TournamentCardProps> = ({ tournament, onEditTournament, onDeleteTournament }: TournamentCardProps) => {
     return (
         <Card className='tournament-card'>
             <Card.Body>
@@ -16,6 +17,7 @@ const TournamentCard: React.FC<TournamentCardProps> = ({ tournament, onEditTourn
                 <Stack direction='vertical' className='tournament-card-button-stack'>
                     <Button variant='secondary' className='tournament-card-button' href={`/tournaments/${tournament.id}`}>View</Button>
                     <Button variant='secondary' className='tournament-card-button' onClick={() => onEditTournament(tournament)}>Edit Details</Button>
+                    <Button variant='danger' className='tournament-card-button' onClick={() => onDeleteTournament(tournament)}>Delete</Button>
                 </Stack>
             </Card.Body>
         </Card>

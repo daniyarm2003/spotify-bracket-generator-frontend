@@ -106,13 +106,35 @@ const TournamentsPage: React.FC = () => {
         }
     }
 
+    const onDeleteTournament = async (id: string) => {
+        try {
+            const deletedTournament = await tournamentApi.deleteTournament(id);
+
+            setTournaments(prevTournaments =>
+                prevTournaments.filter(tournament => 
+                    tournament.id !== deletedTournament.id
+                )
+            );
+        }
+        catch(err: any) {
+            doUnauthorizedNavigate(err);
+            console.error('Error updating tournament:', err);
+        }
+    }
+
     return (
         <div className='page-component'>
             <TitleContainer />
             <MainNavbar />
             <div className='default-page-content-container'>
                 <h2 className='page-heading'>My Tournaments</h2>
-                <TournamentList isLoading={isLoading} tournaments={tournaments} onCreateNew={handleCreateNewClick} onEditTournament={handleEditTournament} />
+                <TournamentList 
+                    isLoading={isLoading} 
+                    tournaments={tournaments} 
+                    onCreateNew={handleCreateNewClick} 
+                    onEditTournament={handleEditTournament}
+                    onDeleteTournament={tournament => onDeleteTournament(tournament.id)}
+                />
             </div>
             <TournamentEditModal
                 tournament={editingTournament}

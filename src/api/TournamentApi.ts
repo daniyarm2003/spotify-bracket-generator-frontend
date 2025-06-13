@@ -66,6 +66,21 @@ export default class TournamentApi {
         return formattedTournament;
     }
 
+    public async deleteTournament(id: string) {
+        const response = await this.serverApi.delete(`/tournaments/${id}`, {
+            withCredentials: true
+        });
+
+        const tournament = response.data as any;
+
+        const formattedTournament: TournamentWithBracketDTO = {
+            ...tournament,
+            createdAt: new Date(tournament.createdAt)
+        };
+
+        return formattedTournament;
+    }
+
     public async setTournamentRoundWinner(nextRoundId: number, winnerId: number) {
         const response = await this.serverApi.put(`/tournaments/rounds/${nextRoundId}`, {
             winnerId
