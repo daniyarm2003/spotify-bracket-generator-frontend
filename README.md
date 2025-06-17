@@ -1,54 +1,36 @@
-# React + TypeScript + Vite
+# Spotify Album Bracket Generator Frontend 🎶🏆
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This frontend powers a web app that lets users log in with Spotify, fetch their saved albums, and generate single-elimination tournament brackets. Built with Vite ⚡ and React ⚛️.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features ✨
 
-## Expanding the ESLint configuration
+- 🔐 Authenticates users via Spotify OAuth and retrieves their saved albums as bracket contestants.  
+- 🤖 Integrates Gemini API (`gemini-2.0-flash-lite` model) to let users apply themes or constraints to album selection.  
+- 🖱️ Provides an intuitive UI to select round winners, with results synced to the backend via API.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Screenshots 📷
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+**Tournament List Page**  
+![Tournament List Page](./screenshots/tournament-list-example.png)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Tournament Generation Options with Sample AI Prompt**  
+![Tournament Generation Options with Sample AI Prompt](./screenshots/ai-prompt-example.png)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+**Example Tournament Bracket**  
+![Example Tournament Bracket](./screenshots/bracket-example.png)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Setup 🛠️
+
+1. 📋 Copy `template.env` to `.env` and fill in required environment variables.
+2. 📦 Run `npm install` to install dependencies
+
+> **Note:**  
+> When developing locally, ensure the app runs on `127.0.0.1` (not `localhost`).  
+> This is required because Spotify OAuth, CORS, and SameSite cookie policies treat `localhost` and `127.0.0.1` as different origins.  
+> Using `127.0.0.1` avoids authentication issues and ensures cookies and API requests work correctly during development.
+
+## Scripts 📜
+
+- `npm run dev`: 🚀 Start the app in development mode with auto-reload.
+- `npm run build`: 🏗️ Compile the Vite app to the `dist` directory.
